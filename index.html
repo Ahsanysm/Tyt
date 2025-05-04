@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TyT</title>
+  <link href="https://fonts.googleapis.com/css?family=Schoolbell" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #1e1e1e, #5b5b5b);
+      color: white;
+      font-family: 'Schoolbell', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .container {
+      max-width: 500px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+      text-align: center;
+    }
+
+    .win1-heading {
+      font-size: 48px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 5px #000, 0 0 10px #000, 0 0 15px #000, 2px 2px 8px #000;
+    }
+
+    .dialogue {
+      font-size: 24px;
+      margin-bottom: 30px;
+      text-shadow: 0 0 5px #000, 0 0 10px #000, 0 0 15px #000, 2px 2px 8px #000;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: 2px solid #000000;
+      background-color: #f0f0f0;
+      color: #222;
+      box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.9);
+      font-family: 'Schoolbell', cursive;
+    }
+
+    input::placeholder {
+      color: #000000;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 20px;
+      text-align: left;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 20px;
+      font-family: 'Schoolbell';
+      border-radius: 8px;
+      border: none;
+      background-color: #88f18c;
+      color: rgb(0, 0, 0);
+      cursor: pointer;
+      width:200px;
+      box-shadow: 5px 10px 10px rgb(0, 0, 0);
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00ff00;
+      color:rgb(0, 0, 0);
+    }
+
+    @media (max-width: 600px) {
+      .win1-heading {
+        font-size: 36px;
+      }
+
+      .dialogue {
+        font-size: 20px;
+
+      }
+
+      input[type="text"],
+      select {
+        font-size: 16px;
+      }
+
+      button {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p class="win1-heading">Welcome to TYT</p>
+    <p class="dialogue">Test Your Typing speed here...</p>
+
+    <div class="form-group">
+      <label for="name">Your Name</label>
+      <input id="name" type="text" placeholder="Enter your name" />
+    </div>
+
+    <div class="form-group">
+      <label for="Time">Choose Time</label>
+      <select id="Time" name="Time">
+        <option value="90 seconds">90 Sec</option>
+        <option value="5 minutes">5 Minutes</option>
+        <option value="10 minutes">10 Minutes</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="Hardness">Select Difficulty</label>
+      <select id="Hardness" name="Hardness">
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+    </div>
+
+    <button>Start Test</button>
+  </div>
+  <script>
+    document.querySelector('button').addEventListener('click', function () {
+      const name = document.getElementById('name').value.trim();
+      const time = document.getElementById('Time').value;
+      const difficulty = document.getElementById('Hardness').value;
+  
+      if (!name) {
+        alert('Please enter your name!');
+        return;
+      }
+  
+      // Save to localStorage
+      localStorage.setItem('userName', name);
+      localStorage.setItem('timeLimit', time);
+      localStorage.setItem('difficulty', difficulty);
+  
+      // Redirect to test.html
+      window.location.href = 'test.html';
+    });
+  </script>
+  
+</body>
+</html>
