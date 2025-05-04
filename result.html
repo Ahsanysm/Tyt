@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TYT - Result</title>
+  <link href="https://fonts.googleapis.com/css?family=Schoolbell" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: rgba(0, 0, 0, 0.9);
+      font-family: 'Schoolbell', cursive;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .popup {
+      background: rgba(255, 255, 255, 0.07);
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 1);
+    }
+
+    .popup h1 {
+      font-size: 38px;
+      margin-bottom: 20px;
+      color: #88f18c;
+      text-shadow: 2px 2px 5px black;
+    }
+
+    .popup p {
+      font-size: 22px;
+      margin: 10px 0;
+      text-shadow: 1px 1px 3px black;
+    }
+
+    .popup .score {
+      font-size: 36px;
+      margin: 20px 0;
+      color: #00ff00;
+      font-weight: bold;
+    }
+
+    .popup button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      background-color: #88f18c;
+      color: black;
+      cursor: pointer;
+      box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.9);
+    }
+
+    .popup button:hover {
+      background-color: #00ff00;
+    }
+  </style>
+</head>
+<body>
+  <div class="popup">
+    <h1> <span id="userName"></span>!</h1>
+    <p>Your Typing Speed:</p>
+    <div class="score" id="wpm">-- WPM</div>
+    <p id="comment">Calculating...</p>
+    <button onclick="location.href='index.html'">Try Again</button>
+  </div>
+
+  <script>
+    const user = localStorage.getItem("userName") || "User";
+    const wpm = localStorage.getItem("wpm"); // Store WPM in test.html before redirecting here
+
+    document.getElementById("userName").innerText = user;
+    document.getElementById("wpm").innerText = wpm ? `${wpm} WPM` : "-- WPM";
+
+    let comment = "Keep going!";
+    
+    // Special comment for any variation of "Ahsan"
+    if (user.toLowerCase() === "ahsan") {
+      comment = "You are champ, no matter what😎";
+    } else {
+      // Add default comments based on WPM
+      if (wpm) {
+        const speed = parseInt(wpm);
+        if (speed < 20) comment = "Abey yar jaldi likh kal subeh panavail jana hai!";
+        else if (speed < 40) comment = "Keyboard ki kya galti hai, tu khud hi slow hai.🫡";
+        else if (speed < 60) comment = "Aaj khush toh bahut hoge tum!:🙂‍";
+        else if (speed < 80) comment = "ahahaha tu ta he-man hai he-man";
+        else comment = "Amazing! You're a typing ninja!";
+      }
+    }
+
+    document.getElementById("comment").innerText = comment;
+  </script>
+</body>
+</html>
