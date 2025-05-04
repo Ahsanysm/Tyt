@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TYT - Typing Test</title>
+  <link href="https://fonts.googleapis.com/css?family=Schoolbell" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(to bottom, #1e1e1e, #5b5b5b);
+      color: white;
+      font-family: roboto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .test-container {
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+      text-align: center;
+    }
+
+    .info {
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .test-text {
+      font-size: 20px;
+      background: #fff;
+      color: #000;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: left;
+      box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.9);
+      white-space: pre-wrap;
+    }
+
+    .highlight-wrong {
+      background-color: red;
+      color: white;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      font-size: 18px;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #000000;
+      box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.9);
+      font-family: roboto;
+      resize: none;
+    }
+
+    .timer {
+      font-size: 24px;
+      margin: 20px 0;
+    }
+
+    .volume-slider {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <div class="info" id="userInfo"></div>
+    <div class="timer" id="timer">Time: --:--</div>
+    <div class="test-text" id="testText">Loading text...</div>
+    <textarea id="typingArea" placeholder="Start typing here..."></textarea>
+    <button id="submitBtn" style="margin-top: 20px; padding: 12px 24px; font-size: 18px; border-radius: 8px; border: none; background-color: #31fb38; color: black; cursor: pointer; box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.9);">
+      Submit
+    </button>
+  </div>
+
+  <audio id="keypressSound" src="keypress.mp3"></audio>
+
+  <script>
+    const userName = localStorage.getItem("userName");
+    const timeLimit = localStorage.getItem("timeLimit");
+    const difficulty = localStorage.getItem("difficulty");
+
+    if (!userName || !timeLimit || !difficulty) {
+      alert("Please enter details first.");
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("userInfo").innerText =
+      `👤 ${userName} | ⏱️ ${timeLimit} | ⚙️ ${difficulty}`;
+
+    const sampleTexts = {
+      Easy: "The quick brown fox jumps over the lazy dog while 123 ducks swim across the calm lake. Every day, Jack and Jill walk 5 miles to visit their 7 cousins who live on Hill Road 89. They enjoy talking about books, movies, and the adventures of explorers like Vasco and Newton...",
+      Medium: "Technology advances quickly, and people everywhere adapt to the rapid changes. Jennifer organizes 3 virtual meetings each week for 12 different teams across 5 cities. Developing new software requires logic, patience, and 100 percent focus...",
+      Hard: "Zentropix & Quoblin@37 merged to form a new startup called Flexandria. Their motto? “Think beyond limits!” Each coder writes gibbernetic loops in pseudo-languages like xyntraCode, blorpLang, and vextureScript..."
+    };
+
+    const originalText = sampleTexts[difficulty] || sampleTexts["Easy"];
+    document.getElementById("testText").innerText = originalText;
+
+    let totalSeconds;
+    if (timeLimit.includes("90")) totalSeconds = 90;
+    else if (timeLimit.includes("5")) totalSeconds = 5 * 60;
+    else if (timeLimit.includes("10")) totalSeconds = 10 * 60;
+    else totalSeconds = 60;
+
+    const timerEl = document.getElementById("timer");
+    let countdownStarted = false;
+    let interval;
+
+    function startCountdown() {
+      interval = setInterval(() => {
+        let min = Math.floor(totalSeconds / 60);
+        let sec = totalSeconds % 60;
+        timerEl.innerText = `Time Left: ${min}:${sec < 10 ? '0' : ''}${sec}`;
+
+        if (totalSeconds <= 0) {
+          clearInterval(interval);
+          document.getElementById("typingArea").disabled = true;
+          alert("⏰ Time's up!");
+          calculateWPM();
+        }
+
+        totalSeconds--;
+      }, 1000);
+    }
+
+    const typingArea = document.getElementById("typingArea");
+
+    typingArea.addEventListener("input", function () {
+      if (!countdownStarted) {
+        startCountdown();
+        countdownStarted = true;
+      }
+
+      highlightTyping();
+    });
+
+    function highlightTyping() {
+      const typed = typingArea.value;
+      let resultHTML = "";
+
+      for (let i = 0; i < originalText.length; i++) {
+        if (!typed[i]) {
+          resultHTML += originalText[i];
+        } else if (typed[i] === originalText[i]) {
+          resultHTML += originalText[i];
+        } else {
+          resultHTML += `<span class="highlight-wrong">${originalText[i]}</span>`;
+        }
+      }
+
+      document.getElementById("testText").innerHTML = resultHTML;
+    }
+
+    function calculateWPM() {
+      const typedText = typingArea.value;
+      const referenceWords = originalText.split(" ");
+      const userWords = typedText.split(" ");
+
+      let correctWords = 0;
+      for (let i = 0; i < userWords.length; i++) {
+        if (userWords[i] === referenceWords[i]) {
+          correctWords++;
+        }
+      }
+
+      const timeTaken = ((timeLimit.includes("90") ? 90 : timeLimit.includes("5") ? 300 : timeLimit.includes("10") ? 600 : 60) - totalSeconds) / 60;
+      const wpm = Math.round(correctWords / timeTaken);
+      localStorage.setItem("wpm", wpm);
+
+      window.location.href = "result.html";
+    }
+
+    // 🔊 Key press sound
+    const keypressSound = document.getElementById("keypressSound");
+    keypressSound.volume = 0.2; // Default to 20% volume
+
+    let muted = false;
+
+    document.getElementById("typingArea").addEventListener("keydown", function () {
+      if (!muted) {
+        keypressSound.currentTime = 0;
+        keypressSound.play();
+      }
+    });
+
+    // 🔇 Mute button
+    const muteButton = document.createElement("button");
+    muteButton.innerText = "🔊";
+    muteButton.style.position = "absolute";
+    muteButton.style.top = "20px";
+    muteButton.style.right = "20px";
+    muteButton.style.background = "transparent";
+    muteButton.style.border = "none";
+    muteButton.style.fontSize = "24px";
+    muteButton.style.color = "white";
+    document.body.appendChild(muteButton);
+
+    muteButton.addEventListener("click", function () {
+      muted = !muted;
+      muteButton.innerText = muted ? "🔇" : "🔊";
+      keypressSound.pause();
+      keypressSound.currentTime = 0;
+    });
+
+    // 🎚️ Volume slider
+    const volumeSlider = document.createElement("input");
+    volumeSlider.type = "range";
+    volumeSlider.min = "0";
+    volumeSlider.max = "1";
+    volumeSlider.step = "0.01";
+    volumeSlider.value = "0.01";
+    volumeSlider.className = "volume-slider";
+    document.body.appendChild(volumeSlider);
+
+    volumeSlider.addEventListener("input", function () {
+      keypressSound.volume = parseFloat(volumeSlider.value);
+    });
+
+    // ✅ Submit button
+    document.getElementById("submitBtn").addEventListener("click", calculateWPM);
+  </script>
+</body>
+</html>
