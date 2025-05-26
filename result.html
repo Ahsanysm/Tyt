@@ -13,7 +13,7 @@
     }
 
     body {
-      background: rgba(0, 0, 0, 0.9);
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       font-family: 'Schoolbell', cursive;
       height: 100vh;
       display: flex;
@@ -23,7 +23,7 @@
     }
 
     .popup {
-      background: rgba(255, 255, 255, 0.07);
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       padding: 40px;
       border-radius: 16px;
       text-align: center;
@@ -35,8 +35,8 @@
     .popup h1 {
       font-size: 38px;
       margin-bottom: 20px;
-      color: #88f18c;
-      text-shadow: 2px 2px 5px black;
+      color: #00ff08de;
+      text-shadow: 1px 1px 3px black;
     }
 
     .popup p {
@@ -50,6 +50,7 @@
       margin: 20px 0;
       color: #00ff00;
       font-weight: bold;
+      text-shadow: 1px 1px 3px black;
     }
 
     .popup button {
@@ -58,7 +59,7 @@
       font-size: 18px;
       border-radius: 8px;
       border: none;
-      background-color: #88f18c;
+      background: linear-gradient(45deg, #39ff14, #a6ff00);
       color: black;
       cursor: pointer;
       box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.9);
@@ -94,7 +95,7 @@
       // Add default comments based on WPM
       if (wpm) {
         const speed = parseInt(wpm);
-        if (speed < 20) comment = "Beta tumse na hopaye ga🥲!";
+        if (speed < 20) comment = "Beta tumse na hopaye ga!";
         else if (speed < 40) comment = "Keyboard ki kya galti hai, tu khud hi slow hai.🫡";
         else if (speed < 60) comment = "Aaj khush toh bahut hoge tum!:🙂‍";
         else if (speed < 80) comment = "ahahaha tu ta he-man hai he-man";
