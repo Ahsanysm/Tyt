@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TyT</title>
+  <title>TyT - Test Your Typing</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="title logo.png">
   <link href="https://fonts.googleapis.com/css?family=Schoolbell" rel="stylesheet" />
   <style>
     * {
@@ -14,7 +15,7 @@
 
     body {
       min-height: 100vh;
-      background: linear-gradient(to bottom, #1e1e1e, #5b5b5b);
+     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: white;
       font-family: 'Schoolbell', cursive;
       display: flex;
@@ -26,11 +27,14 @@
     .container {
       max-width: 500px;
       width: 100%;
-      background: rgba(255, 255, 255, 0.05);
+       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+      box-shadow:
+        0 4px 20px rgb(0, 0, 0),
+        0px 0 20px #8a56fb inset;
       text-align: center;
+      position: relative;
     }
 
     .win1-heading {
@@ -80,18 +84,22 @@
       font-family: 'Schoolbell';
       border-radius: 8px;
       border: none;
-      background-color: #88f18c;
-      color: rgb(0, 0, 0);
+      background: linear-gradient(45deg, #39ff14, #a6ff00);
+      color: #000000;
       cursor: pointer;
-      width:200px;
+      width: 200px;
       box-shadow: 5px 10px 10px rgb(0, 0, 0);
       transition: background-color 0.3s ease;
+      
     }
 
     button:hover {
-      background-color: #00ff00;
-      color:rgb(0, 0, 0);
+      transform: scale(1.05);
+      
     }
+ 
+
+    
 
     @media (max-width: 600px) {
       .win1-heading {
@@ -100,7 +108,6 @@
 
       .dialogue {
         font-size: 20px;
-
       }
 
       input[type="text"],
@@ -109,6 +116,10 @@
       }
 
       button {
+        font-size: 18px;
+      }
+
+      .visitor-counter {
         font-size: 18px;
       }
     }
@@ -143,8 +154,12 @@
     </div>
 
     <button>Start Test</button>
+
+    
   </div>
+
   <script>
+    // Start test button
     document.querySelector('button').addEventListener('click', function () {
       const name = document.getElementById('name').value.trim();
       const time = document.getElementById('Time').value;
@@ -163,6 +178,7 @@
       // Redirect to test.html
       window.location.href = 'test.html';
     });
+  
   </script>
   
 </body>
